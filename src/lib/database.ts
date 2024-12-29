@@ -1,14 +1,12 @@
-import { PrismaD1 } from "@prisma/adapter-d1";
-import { PrismaClient } from "@prisma/client";
+import { drizzle, DrizzleD1Database } from "drizzle-orm/d1";
 
 export class Database {
-  protected prisma!: PrismaClient;
   private static instance: Database;
+  protected db!: DrizzleD1Database;
 
   protected constructor(DB: D1Database) {
     if (!Database.instance) {
-      const adapter = new PrismaD1(DB);
-      this.prisma = new PrismaClient({ adapter });
+      this.db = drizzle(DB);
       Database.instance = this;
     }
     return Database.instance;
